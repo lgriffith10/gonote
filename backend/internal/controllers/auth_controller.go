@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -19,7 +20,13 @@ type LoginRequest struct {
 func (a *AuthController) Login(c echo.Context) error {
 	r := new(LoginRequest)
 	if err := c.Bind(r); err != nil {
+		fmt.Print(err)
 		return echo.NewHTTPError(http.StatusBadRequest, "Invalid request")
+	}
+
+	if err := c.Validate(r); err != nil {
+		fmt.Print(err)
+		return err
 	}
 
 	if r.Name != "jon" || r.Password != "password" {
