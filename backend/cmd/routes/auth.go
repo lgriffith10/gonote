@@ -6,8 +6,9 @@ import (
 )
 
 func InitAuthRoutes(e *echo.Echo) {
-	authController := controllers.AuthController{}
+	authController := controllers.NewAuthController()
 
 	g := e.Group("/auth")
 	g.POST("/login", authController.Login)
+	g.POST("/register", authController.Register)
 }

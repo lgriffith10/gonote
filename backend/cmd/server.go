@@ -5,18 +5,12 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/lgriffith10/gonote/cmd/routes"
+	"github.com/lgriffith10/gonote/internal/database"
 	"github.com/lgriffith10/gonote/internal/validators"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
 func main() {
-	dsn := "host=localhost user=postgres password=postgres dbname=gonote"
-	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-
-	if err != nil {
-		panic(err)
-	}
+	database.InitDatabase()
 
 	e := echo.New()
 	e.Validator = &validators.CustomValidator{Validator: validator.New()}

@@ -1,55 +1,38 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
-	"time"
 
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
-	auth_jwt "github.com/lgriffith10/gonote/internal/auth"
+	"github.com/lgriffith10/gonote/internal/services"
 )
 
-type AuthController struct{}
+type AuthController struct {
+	authService *services.AuthService
+}
 
-type LoginRequest struct {
-	Name     string `json:"name" validate:"required"`
-	Password string `json:"password" validate:"required"`
+func NewAuthController() *AuthController {
+	return &AuthController{
+		authService: services.NewAuthService(),
+	}
 }
 
 func (a *AuthController) Login(c echo.Context) error {
-	r := new(LoginRequest)
-	if err := c.Bind(r); err != nil {
-		fmt.Print(err)
-		return echo.NewHTTPError(http.StatusBadRequest, "Invalid request")
-	}
-
-	if err := c.Validate(r); err != nil {
-		fmt.Print(err)
-		return err
-	}
-
-	if r.Name != "jon" || r.Password != "password" {
-		return echo.ErrUnauthorized
-	}
-
-	claims := &auth_jwt.JwtCustomClaims{
-		Name:  "Jon Snow",
-		Admin: true,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(72 * time.Hour)),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	t, err := token.SignedString([]byte("secret"))
+	result, err := a.authService.Login(c)
 
 	if err != nil {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, echo.Map{
-		"token": t,
-	})
+	return c.JSON(http.StatusOK, result)
+}
+
+func (a *AuthController) Register(c echo.Context) error {
+	err := a.authService.RegisterUser(c)
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, nil)
 }
