@@ -48,7 +48,7 @@ func (a *AuthService) Login(c echo.Context) (*dtos.LoginResponse, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	t, err := token.SignedString([]byte("secret"))
+	t, err := token.SignedString([]byte("secret-key"))
 
 	if err != nil {
 		return nil, err

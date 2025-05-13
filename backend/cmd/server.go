@@ -19,6 +19,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	routes.InitAuthRoutes(e)
+	routes.InitProtectedRoutes(e)
 
 	e.Logger.Fatal(e.Start(":4000"))
 }
