@@ -1,15 +1,10 @@
 <template>
-  <main>
-    <Button>Test</Button>
-  </main>
+  <div>
+    <Button variant="default"><Camera /></Button>
+  </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import Button from '@/components/ui/button/Button.vue'
-import { onMounted } from 'vue'
-import { upfetch } from '@/lib/upfetch'
-
-onMounted(async () => {
-  await upfetch('/api/test', {})
-})
+import { Camera } from 'lucide-vue-next'
 </script>

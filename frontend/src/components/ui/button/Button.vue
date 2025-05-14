@@ -7,7 +7,6 @@ import { type ButtonVariants, buttonVariants } from '.'
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
-  cursor?: ButtonVariants['cursor']
   class?: HTMLAttributes['class']
 }
 
