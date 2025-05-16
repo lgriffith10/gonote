@@ -1,11 +1,16 @@
 <template>
   <Loader :is-loading="isPending" />
-  <form class="flex flex-col gap-y-4" @submit="onSubmit">
+  <form class="flex flex-col gap-y-4" data-testid="login-form">
     <FormField v-slot="{ componentField }" name="email" :validate-on-blur="!isFieldDirty">
       <FormItem>
         <FormLabel>Email</FormLabel>
         <FormControl>
-          <Input v-bind="componentField" type="text" placeholder="john@doe.com" />
+          <Input
+            v-bind="componentField"
+            data-testid="login-form-email"
+            type="text"
+            placeholder="john@doe.com"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
@@ -15,20 +20,26 @@
       <FormItem>
         <FormLabel>Password</FormLabel>
         <FormControl>
-          <Input v-bind="componentField" type="password" placeholder="password" />
+          <Input
+            v-bind="componentField"
+            data-testid="login-form-password"
+            type="password"
+            placeholder="password"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
     </FormField>
 
-    <Button class="w-full" type="submit"> Login </Button>
+    <Button class="w-full" type="submit" data-testid="login-form-button" @click="onSubmit">
+      Login
+    </Button>
   </form>
 </template>
 
 <script lang="ts" setup>
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
 import Button from '@/components/ui/button/Button.vue'
 import { FormField } from '@/components/ui/form'
 import FormLabel from '@/components/ui/form/FormLabel.vue'
@@ -41,15 +52,12 @@ import Loader from '@/components/ui/loader/Loader.vue'
 import { toast } from 'vue-sonner'
 import type { LoginResponse } from '../types'
 import { useLocalStorage } from '@vueuse/core'
+import { LoginFormSchema } from '../schema'
+import type { AxiosResponse } from 'axios'
 
 const { mutate, isPending } = useLoginMutation()
 
-const formSchema = toTypedSchema(
-  z.object({
-    email: z.string().min(1).email(),
-    password: z.string().min(1),
-  }),
-)
+const formSchema = toTypedSchema(LoginFormSchema)
 
 const { isFieldDirty, handleSubmit } = useForm({
   validationSchema: formSchema,
@@ -62,9 +70,9 @@ const onSubmit = handleSubmit((values) => {
         error.message.includes('401') ? 'Invalid email or password' : 'Something went wrong',
       )
     },
-    onSuccess: (data: LoginResponse) => {
+    onSuccess: (res: AxiosResponse<LoginResponse>) => {
       toast.success('Login successful')
-      useLocalStorage('bearer-token', data.token)
+      useLocalStorage('bearer-token', res.data.token)
     },
   })
 })

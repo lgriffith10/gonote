@@ -1,9 +1,9 @@
-import { upfetch } from '@/lib/up-fetch'
+import { api } from '@/lib/api'
 import type { LoginRequest } from '../types'
 
 export async function loginMutation(request: LoginRequest) {
-  return await upfetch('/auth/login', {
+  return await api('/auth/login', {
     method: 'POST',
-    body: JSON.stringify(request),
+    data: JSON.stringify(request),
   })
 }
