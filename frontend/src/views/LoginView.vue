@@ -12,6 +12,6 @@
 </template>
 
 <script lang="ts" setup>
-import LoginForm from '@/entities/auth/login/form/LoginForm.vue'
+import LoginForm from '@/entities/auth/login/components/LoginForm.vue'
 import GnCard from '@/components/ui/card/GnCard.vue'
 </script>

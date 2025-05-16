@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/lgriffith10/gonote/cmd/routes"
 	"github.com/lgriffith10/gonote/internal/database"
+	"github.com/lgriffith10/gonote/internal/translations"
 	"github.com/lgriffith10/gonote/internal/validators"
 )
 
@@ -22,6 +23,8 @@ func main() {
 		AllowMethods: []string{echo.GET, echo.POST, echo.PATCH, echo.PUT, echo.DELETE, echo.OPTIONS},
 		AllowHeaders: []string{"Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"},
 	}))
+
+	translations.LoadTranslations()
 
 	routes.InitAuthRoutes(e)
 	routes.InitProtectedRoutes(e)

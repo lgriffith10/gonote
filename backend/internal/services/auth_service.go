@@ -72,15 +72,16 @@ func (a *AuthService) RegisterUser(c echo.Context) error {
 	}
 
 	user := models.User{
-		Name:     r.Name,
-		Email:    r.Email,
-		Password: password,
+		Email:     r.Email,
+		Password:  password,
+		Firstname: r.Firstname,
+		Lastname:  r.Lastname,
 	}
 
 	err = a.authRepository.RegisterUser(user)
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to register user")
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return nil

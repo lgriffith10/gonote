@@ -1,0 +1,8 @@
+{
+  "WelcomeUser": {
+    "other": "Welcome {{.User}}!"
+  },
+  "emailAlreadyExists": {
+    "other": "Email already exists"
+  }
+}

@@ -1,6 +1,6 @@
 <template>
   <Loader :is-loading="isPending" />
-  <form class="flex flex-col gap-y-4" data-testid="login-form">
+  <form class="flex flex-col gap-y-4" data-testid="login-form" @submit.prevent>
     <FormField v-slot="{ componentField }" name="email" :validate-on-blur="!isFieldDirty">
       <FormItem>
         <FormLabel>Email</FormLabel>
@@ -8,7 +8,7 @@
           <Input
             v-bind="componentField"
             data-testid="login-form-email"
-            type="text"
+            type="email"
             placeholder="john@doe.com"
           />
         </FormControl>

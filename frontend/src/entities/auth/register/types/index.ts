@@ -4,3 +4,7 @@ export type RegisterRequest = {
   firstname: string
   lastname: string
 }
+
+export type RegisterResponse = {
+  token: string
+}

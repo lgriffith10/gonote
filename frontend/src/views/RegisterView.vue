@@ -13,5 +13,5 @@
 
 <script lang="ts" setup>
 import GnCard from '@/components/ui/card/GnCard.vue'
-import RegisterForm from '@/entities/auth/register/form/RegisterForm.vue'
+import RegisterForm from '@/entities/auth/register/components/RegisterForm.vue'
 </script>

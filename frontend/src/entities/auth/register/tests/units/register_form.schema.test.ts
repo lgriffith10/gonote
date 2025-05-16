@@ -62,6 +62,24 @@ describe('LoginFormSchema', () => {
     expect(result.error?.issues[0].message).toBe('Password must be at least 8 characters long')
   })
 
+  test('should invalidate password and repeatPassword mismatch', () => {
+    // Arrange
+
+    const form: RegisterForm = RegisterFormBuilder.create()
+      .withPassword('password123')
+      .withRepeatPassword('differentPassword')
+      .get()
+
+    // Act
+
+    const result = RegisterFormSchema.safeParse(form)
+
+    // Assert
+
+    expect(result.success).toBe(false)
+    expect(result.error?.issues[0].message).toBe('Passwords do not match')
+  })
+
   test('should invalidate empty firstname', () => {
     // Arrange
 

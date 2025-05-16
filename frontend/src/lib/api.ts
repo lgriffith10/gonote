@@ -24,5 +24,9 @@ api.interceptors.response.use(
         window.location.href = '/login'
       }
     }
+
+    if (error.status === 500) {
+      throw error.response.data
+    }
   },
 )

@@ -6,6 +6,7 @@ interface Blueprint {
   password: RegisterForm['password']
   firstname: RegisterForm['firstname']
   lastname: RegisterForm['lastname']
+  repeatPassword: RegisterForm['repeatPassword']
 }
 
 class Blueprint implements Blueprint {
@@ -14,6 +15,7 @@ class Blueprint implements Blueprint {
     this.password = blueprint.password
     this.firstname = blueprint.firstname
     this.lastname = blueprint.lastname
+    this.repeatPassword = blueprint.repeatPassword
   }
 
   email: RegisterForm['email']
@@ -26,9 +28,12 @@ export class RegisterFormBuilder {
   private readonly blueprint: Blueprint
 
   constructor() {
+    const password = faker.internet.password()
+
     this.blueprint = new Blueprint({
       email: faker.internet.email(),
-      password: faker.internet.password(),
+      password: password,
+      repeatPassword: password,
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
     })
@@ -45,6 +50,11 @@ export class RegisterFormBuilder {
 
   public withPassword(password: RegisterForm['password']): this {
     this.blueprint.password = password
+    return this
+  }
+
+  public withRepeatPassword(repeatPassword: RegisterForm['repeatPassword']): this {
+    this.blueprint.repeatPassword = repeatPassword
     return this
   }
 
