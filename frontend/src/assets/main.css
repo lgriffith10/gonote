@@ -122,6 +122,10 @@
   }
 }
 
+a {
+  @apply text-blue-400 underline
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -38,24 +38,27 @@
 </template>
 
 <script lang="ts" setup>
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
 import Button from '@/components/ui/button/Button.vue'
-import { FormField } from '@/components/ui/form'
 import FormLabel from '@/components/ui/form/FormLabel.vue'
 import FormControl from '@/components/ui/form/FormControl.vue'
 import Input from '@/components/ui/input/Input.vue'
 import FormItem from '@/components/ui/form/FormItem.vue'
 import FormMessage from '@/components/ui/form/FormMessage.vue'
-import { useLoginMutation } from '../hooks'
 import Loader from '@/components/ui/loader/Loader.vue'
+import { FormField } from '@/components/ui/form'
+
+import { useForm } from 'vee-validate'
+import { useRouter } from 'vue-router'
+import { useLoginMutation } from '../hooks'
+import { useLocalStorage } from '@vueuse/core'
+import { toTypedSchema } from '@vee-validate/zod'
 import { toast } from 'vue-sonner'
 import type { LoginResponse } from '../types'
-import { useLocalStorage } from '@vueuse/core'
 import { LoginFormSchema } from '../schema'
 import type { AxiosResponse } from 'axios'
 
 const { mutate, isPending } = useLoginMutation()
+const router = useRouter()
 
 const formSchema = toTypedSchema(LoginFormSchema)
 
@@ -73,6 +76,7 @@ const onSubmit = handleSubmit((values) => {
     onSuccess: (res: AxiosResponse<LoginResponse>) => {
       toast.success('Login successful')
       useLocalStorage('bearer-token', res.data.token)
+      router.push({ name: 'Home' })
     },
   })
 })

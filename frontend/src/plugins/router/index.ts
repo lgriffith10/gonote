@@ -6,4 +6,18 @@ const router = createRouter({
   routes: routes,
 })
 
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('bearer-token')
+
+  if (to.meta.isPublic && token) {
+    return next({ name: 'Home' })
+  }
+
+  if (!to.meta.isPublic && !token) {
+    return next({ name: 'Login' })
+  }
+
+  return next()
+})
+
 export default router
