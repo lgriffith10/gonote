@@ -16,7 +16,7 @@ func TestLogin(t *testing.T) {
 
 	t.Run("should return 200 status", func(t *testing.T) {
 		e := test.SetupTestServer()
-		req := httptest.NewRequest(echo.POST, "/", nil)
+		req := httptest.NewRequest(echo.POST, "/auth/login", nil)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 
