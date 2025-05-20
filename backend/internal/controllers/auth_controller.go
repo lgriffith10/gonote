@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -21,6 +22,7 @@ func (a *AuthController) Login(c echo.Context) error {
 	result, err := a.authService.Login(c)
 
 	if err != nil {
+		fmt.Println(err.Error())
 		return err
 	}
 

@@ -11,15 +11,22 @@ import (
 var database *gorm.DB
 var err error
 
-func InitDatabase() {
-	dsn := "host=localhost user=postgres password=postgres dbname=gonote"
+func InitDatabase(isTest bool) {
+	var dsn string
+
+	if isTest {
+		dsn = "host=localhost user=postgres password=postgres dbname=gonote_test port=5433"
+	} else {
+		dsn = "host=localhost user=postgres password=postgres dbname=gonote"
+	}
+
 	database, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		panic(err)
 	}
 
-	err = database.AutoMigrate(&models.User{})
+	err = database.AutoMigrate(&models.User{}, &models.Class{})
 
 	if err != nil {
 		panic(err)

@@ -11,8 +11,13 @@ import (
 )
 
 func main() {
-	database.InitDatabase()
+	database.InitDatabase(false)
+	e := SetupServer()
 
+	e.Logger.Fatal(e.Start(":4000"))
+}
+
+func SetupServer() *echo.Echo {
 	e := echo.New()
 	e.Validator = &validators.CustomValidator{Validator: validator.New()}
 
@@ -29,5 +34,5 @@ func main() {
 	routes.InitAuthRoutes(e)
 	routes.InitProtectedRoutes(e)
 
-	e.Logger.Fatal(e.Start(":4000"))
+	return e
 }
