@@ -10,7 +10,7 @@ import (
 	"github.com/lgriffith10/gonote/internal/dtos"
 	"github.com/lgriffith10/gonote/internal/models"
 	"github.com/lgriffith10/gonote/internal/repositories"
-	"github.com/lgriffith10/gonote/internal/utils.go"
+	"github.com/lgriffith10/gonote/internal/utils"
 )
 
 type AuthService struct {
@@ -65,15 +65,9 @@ func (a *AuthService) RegisterUser(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
 
-	password, err := utils.HashPassword(r.Password)
-
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to hash password")
-	}
-
 	user := models.User{
 		Email:     r.Email,
-		Password:  password,
+		Password:  r.Password,
 		Firstname: r.Firstname,
 		Lastname:  r.Lastname,
 	}

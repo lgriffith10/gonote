@@ -16,6 +16,8 @@ var (
 	bundle *i18n.Bundle
 )
 
+var localizer *i18n.Localizer
+
 func LoadTranslations() {
 	bundle = i18n.NewBundle(language.English)
 	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
@@ -25,7 +27,7 @@ func LoadTranslations() {
 		log.Fatalf("Erreur chargement fichier : %v", err)
 	}
 
-	localizer := i18n.NewLocalizer(bundle, "en")
+	localizer = i18n.NewLocalizer(bundle, "en")
 
 	tests := []string{"WelcomeUser", "emailAlreadyExists", "nonexistentID"}
 
@@ -44,16 +46,15 @@ func LoadTranslations() {
 	}
 }
 
-func GetTranslation(id string, args map[string]any) (string, error) {
-	localizer := i18n.NewLocalizer(bundle, "en")
-
+func GetTranslation(id string, args map[string]any) string {
 	msg, err := localizer.Localize(&i18n.LocalizeConfig{
 		MessageID:    id,
 		TemplateData: args,
 	})
+
 	if err != nil {
-		return "", fmt.Errorf("error getting translation for %q: %w", id, err)
+		return id
 	}
 
-	return msg, nil
+	return msg
 }

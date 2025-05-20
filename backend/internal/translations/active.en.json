@@ -4,5 +4,8 @@
   },
   "emailAlreadyExists": {
     "other": "Email already exists"
+  },
+  "registerUserError": {
+    "other": "Failed to register user. Please try again later."
   }
 }

@@ -6,31 +6,43 @@ import (
 	"github.com/lgriffith10/gonote/internal/database"
 	"github.com/lgriffith10/gonote/internal/models"
 	"github.com/lgriffith10/gonote/internal/translations"
-	"github.com/lgriffith10/gonote/internal/utils.go"
+	"github.com/lgriffith10/gonote/internal/utils"
 	"gorm.io/gorm"
 )
 
 type AuthRepository struct {
-	db *gorm.DB
+	DB *gorm.DB
 }
 
 func NewAuthRepository() *AuthRepository {
 	return &AuthRepository{
-		db: database.DB(),
+		DB: database.DB(),
 	}
 }
 
 func (a *AuthRepository) RegisterUser(user models.User) error {
-	isEmailAlreadyTaken := a.db.Model(&models.User{}).Where("email = ?", user.Email).First(&user).RowsAffected == 1
+	isEmailAlreadyTaken := a.DB.Model(&models.User{}).Where("email = ?", user.Email).First(&user).RowsAffected == 1
 
 	if isEmailAlreadyTaken {
-		msg, _ := translations.GetTranslation("emailAlreadyExists", nil)
+		msg := translations.GetTranslation("emailAlreadyExists", nil)
 
 		return errors.New(msg)
 	}
 
-	if err := a.db.Create(&user).Error; err != nil {
-		return err
+	password, err := utils.HashPassword(user.Password)
+
+	if err != nil {
+		msg := translations.GetTranslation("registerUserError", nil)
+
+		return errors.New(msg)
+	}
+
+	user.Password = password
+
+	if err := a.DB.Create(&user).Error; err != nil {
+		msg := translations.GetTranslation("registerUserError", nil)
+
+		return errors.New(msg)
 	}
 
 	return nil
@@ -38,7 +50,7 @@ func (a *AuthRepository) RegisterUser(user models.User) error {
 
 func (a *AuthRepository) AreCredentialsCorrect(email, password string) bool {
 	var hash string
-	result := a.db.Model(&models.User{}).Where("email = ?", email).Select("password").First(&hash)
+	result := a.DB.Model(&models.User{}).Where("email = ?", email).Select("password").First(&hash)
 
 	if result.RowsAffected == 0 {
 		return false

@@ -4,20 +4,20 @@ import (
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/lgriffith10/gonote/cmd/routes"
 	"github.com/lgriffith10/gonote/internal/database"
+	"github.com/lgriffith10/gonote/internal/routes"
 	"github.com/lgriffith10/gonote/internal/translations"
 	"github.com/lgriffith10/gonote/internal/validators"
 )
 
 func main() {
-	database.InitDatabase(false)
-	e := SetupServer()
+	e := SetupServer(false)
 
 	e.Logger.Fatal(e.Start(":4000"))
 }
 
-func SetupServer() *echo.Echo {
+func SetupServer(isTest bool) *echo.Echo {
+	database.InitDatabase(isTest)
 	e := echo.New()
 	e.Validator = &validators.CustomValidator{Validator: validator.New()}
 
