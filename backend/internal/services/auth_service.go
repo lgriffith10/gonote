@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
-	auth_jwt "github.com/lgriffith10/gonote/internal/auth"
+	"github.com/lgriffith10/gonote/internal/auth"
 	"github.com/lgriffith10/gonote/internal/dtos"
 	"github.com/lgriffith10/gonote/internal/models"
 	"github.com/lgriffith10/gonote/internal/repositories"
@@ -38,7 +38,7 @@ func (a *AuthService) Login(c echo.Context) (*dtos.LoginResponse, error) {
 		return nil, echo.NewHTTPError(http.StatusUnauthorized, "Invalid credentials")
 	}
 
-	claims := &auth_jwt.JwtCustomClaims{
+	claims := &auth.JwtCustomClaims{
 		Name:  r.Email,
 		Admin: false,
 		RegisteredClaims: jwt.RegisteredClaims{
