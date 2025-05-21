@@ -34,5 +34,5 @@ func (a *AuthController) Register(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, nil)
+	return c.JSON(http.StatusCreated, nil)
 }

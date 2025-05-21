@@ -1,9 +1,11 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/json"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/go-playground/validator"
@@ -51,4 +53,20 @@ func ReadResponseError(t testing.TB, res *http.Response) (string, error) {
 	json.Unmarshal(data, &str)
 
 	return str.Message, err
+}
+
+func ParseAndSendRequest(t testing.TB, e *echo.Echo, request any, path string) (echo.Context, *httptest.ResponseRecorder) {
+	t.Helper()
+	body, err := ParseRequestToBytes(request)
+
+	if err != nil {
+		t.Fatalf("failed to parse request to bytes: %v", err)
+	}
+
+	req := httptest.NewRequest(echo.POST, "/auth/login", bytes.NewReader(body))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
+	return c, rec
 }

@@ -75,6 +75,10 @@ func (a *AuthService) RegisterUser(c echo.Context) error {
 	err = a.authRepository.RegisterUser(user)
 
 	if err != nil {
+		if err.Error() == "Email already exists" {
+			return echo.NewHTTPError(http.StatusConflict, err)
+		}
+
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
