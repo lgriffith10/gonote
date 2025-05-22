@@ -65,7 +65,7 @@ func (a *AuthService) RegisterUser(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
 
-	user := models.User{
+	user := &models.User{
 		Email:     r.Email,
 		Password:  r.Password,
 		Firstname: r.Firstname,

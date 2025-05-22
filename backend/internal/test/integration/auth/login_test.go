@@ -21,7 +21,7 @@ func TestLogin(t *testing.T) {
 	database.InitDatabase(true)
 	e := utils.SetupTestServer(t)
 
-	user := models.User{
+	user := &models.User{
 		Id:        uuid.New(),
 		Email:     "test@test.com",
 		Password:  "password",
@@ -34,7 +34,7 @@ func TestLogin(t *testing.T) {
 	userRepository.RegisterUser(user)
 
 	t.Cleanup(func() {
-		database.DB().Delete(&user)
+		database.DB().Delete(user)
 	})
 
 	t.Run("should return 200 status", func(t *testing.T) {

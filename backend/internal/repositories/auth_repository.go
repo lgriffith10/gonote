@@ -20,7 +20,7 @@ func NewAuthRepository() *AuthRepository {
 	}
 }
 
-func (a *AuthRepository) RegisterUser(user models.User) error {
+func (a *AuthRepository) RegisterUser(user *models.User) error {
 	isEmailAlreadyTaken := a.DB.Model(&models.User{}).Where("email = ?", user.Email).First(&user).RowsAffected == 1
 
 	if isEmailAlreadyTaken {

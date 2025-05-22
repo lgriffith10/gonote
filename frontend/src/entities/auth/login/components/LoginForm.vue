@@ -74,9 +74,13 @@ const onSubmit = handleSubmit((values) => {
       )
     },
     onSuccess: (res: AxiosResponse<LoginResponse>) => {
-      toast.success('Login successful')
-      useLocalStorage('bearer-token', res.data.token)
-      router.push({ name: 'Home' })
+      if (res.data.token) {
+        toast.success('Login successful')
+        useLocalStorage('bearer-token', res.data.token)
+        router.push({ name: 'Home' })
+      } else {
+        toast.error('Something went wrong')
+      }
     },
   })
 })

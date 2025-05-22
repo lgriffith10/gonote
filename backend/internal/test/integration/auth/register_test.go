@@ -23,7 +23,7 @@ func TestRegister(t *testing.T) {
 
 	_userRepository := repositories.NewAuthRepository()
 
-	_user := models.User{
+	_user := &models.User{
 		Id:        uuid.New(),
 		Email:     "bep@bep.com",
 		Password:  "password",
